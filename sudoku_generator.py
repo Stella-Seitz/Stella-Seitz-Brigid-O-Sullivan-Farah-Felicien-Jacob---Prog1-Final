@@ -1,4 +1,5 @@
 import math,random
+import Screen as s #imports screen class
 
 """
 This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by Aarti_Rathi and Ankur Trisal
@@ -23,7 +24,7 @@ class SudokuGenerator:
 	None
     '''
     def __init__(self, row_length, removed_cells):
-        pass
+        self.screen = s.Screen() #creates a new screen using screen class
 
     '''
 	Returns a 2D python list of numbers which represents the board
@@ -34,6 +35,7 @@ class SudokuGenerator:
     def get_board(self):
         pass
 
+
     '''
 	Displays the board to the console
     This is not strictly required, but it may be useful for debugging purposes
@@ -42,7 +44,8 @@ class SudokuGenerator:
 	Return: None
     '''
     def print_board(self):
-        pass
+        self.screen.GameScreen()  # creates grid and buttons for GameScreen
+        # self.screen.displayNums(nums, playernums) #will display numbers on grid, go to screen file to read what parameters mean, needs numbers to work
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
