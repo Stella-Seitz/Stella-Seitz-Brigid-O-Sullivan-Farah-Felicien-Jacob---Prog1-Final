@@ -4,15 +4,21 @@ screen class holds everything graphics related to the sudoku project
 
 It contains the Functions: 
 --> __init__(): creates a new blank screen 
---> ButtonEventCheck(): checks if anything has been pressed, it will return the name of the pressed button or the row and column of the grid if a grid is pressed
+--> ButtonEventCheck(): checks if anything has been pressed on both screen and keyboard
+if screen is pressed it will return the name of the pressed button or the row and column of the grid if a grid is pressed
+if keyboard is pressed it will return number of pressed key or the word "Enter" if enter key is pressed
 --> FindCenter(object): Finds the center of the given rect, probably do not need to use for anything else other then what its already used for.
 --> ClearScreen(): makes the screen blank
 --> StartScreen(): displays the starting screen with the buttons easy, medium, and hard
 --> GameScreen(): creates the game screen (the grid) and the buttons Restart, Reset and Exit 
---> displayNums(nums,playernums): Displays the numbers onto the GameScreen Grid.
+--> displayNums(nums,playernums): Displays the numbers onto the GameScreen Grid. displays both starting game numbers and finalized player enter numbers
 the function above takes in two parameters, each should be a 9x9 2D array with integers.
 one parameter should contain the numbers set there by the game.
 the second parameter should contain the numbers set there by the player.
+-->DisplayTempNum(num,row,col): intended to display only temporary numbers BEFORE the user presses enter 
+The first parameter is the number you want displayed
+The second parameter is the row you want the number to be displayed in within the 9x9 grid 
+the third parameter is the column you want the number to be displayed in within the 9x9 grid 
 -->WinningScreen(): Displays the winning screen and the button Exit
 --> LosingScreen(): Displays the losing screen and the restart button
 '''
@@ -40,8 +46,8 @@ class Screen:
         #below updates screen
         pygame.display.update()
 
-    def ButtonEventCheck(self):
-        for event in pygame.event.get():
+    def ButtonEventCheck(self): #accounts for all button pressing on screen or on keybord for game
+        for event in pygame.event.get(): #below is mouse clicking, clicking for on screen
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = event.pos
                 if self.easyButton.collidepoint(position):
@@ -64,6 +70,15 @@ class Screen:
                     square = pygame.Rect(col*square_size, row*square_size, square_size+2, square_size+2)
                     pygame.draw.rect(self.screen, "red", square, 4)
                     return(int(col),int(row))
+            elif event.type == pygame.KEYDOWN: #below is keybord clicking, clicking for on keybord
+                value = event.unicode
+                if value.isdigit():
+                    return(value)
+                elif event.key == pygame.K_RETURN:
+                    return("Enter")
+
+
+
             pygame.display.update()
 
     def ClearScreen(self):
@@ -245,6 +260,25 @@ class Screen:
             WordLocation = (square_size-(square_size/2), WordLocation[1]+square_size)
 
         pygame.display.update()
+
+    def DisplayTempNum(self,num,row,col): #intended to display user inputted number BEFORE they press enter
+        font = pygame.font.SysFont('Arial', 38)  # initialized font
+
+        #redraws red box, this is here because in order to display a new numbe ryou have to erase the entire screen
+        square_size = self.screen.get_rect().width / 9
+        square = pygame.Rect(col * square_size, row * square_size, square_size + 2, square_size + 2)
+        pygame.draw.rect(self.screen, "red", square, 4)
+
+        #below actually displays the number
+        renderedNum = font.render(str(num), False, "red")
+        NumY = row * square_size + renderedNum.get_rect().height / 2 #finds Y location of number
+        NumX = ((square_size - (square_size / 2)) + (square_size * col)) - (renderedNum.get_rect().width / 2) #finds x location of number
+
+        self.screen.blit(renderedNum, (NumX,NumY)) #puts number on screen
+
+        pygame.display.update()
+
+
 
     def WinningScreen(self):
         font = pygame.font.SysFont('Arial', 40)
