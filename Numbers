@@ -1,3 +1,4 @@
+import copy
 class Numbers:
     def __init__(self, board, screen):
         self.screen = screen
@@ -47,7 +48,7 @@ class Numbers:
         return combined
 
     def check_board(self):
-        board = self.get_combined_board()
+        board = self.combine()
         for row in board:
             if set(row) != set(range(1, 10)):
                 return False
