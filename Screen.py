@@ -6,7 +6,7 @@ It contains the Functions:
 --> __init__(): creates a new blank screen 
 --> ButtonEventCheck(): checks if anything has been pressed on both screen and keyboard
 if screen is pressed it will return the name of the pressed button or the row and column of the grid if a grid is pressed
-if keyboard is pressed it will return number of pressed key or the word "Enter" if enter key is pressed
+if keyboard is pressed it will return number of pressed key or the word "Enter" if ENTER key is pressed, and will also return if Up, Down, Left and Right if UP DOWN LEFT and RIGHT key are pressed
 --> FindCenter(object): Finds the center of the given rect, probably do not need to use for anything else other then what its already used for.
 --> ClearScreen(): makes the screen blank
 --> StartScreen(): displays the starting screen with the buttons easy, medium, and hard
@@ -15,10 +15,11 @@ if keyboard is pressed it will return number of pressed key or the word "Enter" 
 the function above takes in two parameters, each should be a 9x9 2D array with integers.
 one parameter should contain the numbers set there by the game.
 the second parameter should contain the numbers set there by the player.
--->DisplayTempNum(num,row,col): intended to display only temporary numbers BEFORE the user presses enter 
+-->displayTempNum(num,row,col): intended to display only temporary numbers BEFORE the user presses enter 
 The first parameter is the number you want displayed
 The second parameter is the row you want the number to be displayed in within the 9x9 grid 
 the third parameter is the column you want the number to be displayed in within the 9x9 grid 
+If You enter num as 0 it will just draw the red box at the number and column you put it in
 -->WinningScreen(): Displays the winning screen and the button Exit
 --> LosingScreen(): Displays the losing screen and the restart button
 '''
@@ -76,9 +77,14 @@ class Screen:
                     return(value)
                 elif event.key == pygame.K_RETURN:
                     return("Enter")
-
-
-
+                elif event.key == pygame.K_UP:
+                    return("Up")
+                elif event.key == pygame.K_DOWN:
+                    return("Down")
+                elif event.key == pygame.K_LEFT:
+                    return("Left")
+                elif event.key == pygame.K_RIGHT:
+                    return("Right")
             pygame.display.update()
 
     def ClearScreen(self):
@@ -261,7 +267,7 @@ class Screen:
 
         pygame.display.update()
 
-    def DisplayTempNum(self,num,row,col): #intended to display user inputted number BEFORE they press enter
+    def displayTempNum(self,num,row,col): #intended to display user inputted number BEFORE they press enter
         font = pygame.font.SysFont('Arial', 38)  # initialized font
 
         #redraws red box, this is here because in order to display a new numbe ryou have to erase the entire screen
@@ -269,12 +275,12 @@ class Screen:
         square = pygame.Rect(col * square_size, row * square_size, square_size + 2, square_size + 2)
         pygame.draw.rect(self.screen, "red", square, 4)
 
-        #below actually displays the number
-        renderedNum = font.render(str(num), False, "red")
-        NumY = row * square_size + renderedNum.get_rect().height / 2 #finds Y location of number
-        NumX = ((square_size - (square_size / 2)) + (square_size * col)) - (renderedNum.get_rect().width / 2) #finds x location of number
-
-        self.screen.blit(renderedNum, (NumX,NumY)) #puts number on screen
+        if num != 0:
+            #below actually displays the number
+            renderedNum = font.render(str(num), False, "red")
+            NumY = row * square_size + renderedNum.get_rect().height / 2 #finds Y location of number
+            NumX = ((square_size - (square_size / 2)) + (square_size * col)) - (renderedNum.get_rect().width / 2) #finds x location of number
+            self.screen.blit(renderedNum, (NumX,NumY)) #puts number on screen
 
         pygame.display.update()
 
