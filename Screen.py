@@ -6,7 +6,9 @@ It contains the Functions:
 --> __init__(): creates a new blank screen 
 --> ButtonEventCheck(): checks if anything has been pressed on both screen and keyboard
 if screen is pressed it will return the name of the pressed button or the row and column of the grid if a grid is pressed
-if keyboard is pressed it will return number of pressed key or the word "Enter" if ENTER key is pressed, and will also return if Up, Down, Left and Right if UP DOWN LEFT and RIGHT key are pressed
+if keyboard is pressed it will return number of pressed key or the word "Enter" 
+if ENTER key is pressed, and will also return if Up, Down, Left and Right if UP DOWN LEFT and RIGHT key are pressed
+if DELETE key or BACKSPACE key is pressed it returns Delete
 --> FindCenter(object): Finds the center of the given rect, probably do not need to use for anything else other then what its already used for.
 --> ClearScreen(): makes the screen blank
 --> StartScreen(): displays the starting screen with the buttons easy, medium, and hard
@@ -85,6 +87,8 @@ class Screen:
                     return("Left")
                 elif event.key == pygame.K_RIGHT:
                     return("Right")
+                elif event.key == pygame.K_BACKSPACE or event.key == pygame.K_DELETE:
+                    return("Delete")
             pygame.display.update()
 
     def ClearScreen(self):
