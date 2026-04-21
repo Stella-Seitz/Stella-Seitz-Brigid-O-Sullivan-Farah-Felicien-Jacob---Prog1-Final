@@ -9,14 +9,11 @@ def main():
     #Initilizing Screen and Pygame
     pygame.init()
     game_screen = Screen()
-    #Using a state tracker type method
     state = "START"
-
     sudoku_board = None
     game_numbers = None
     selected_cell = None
     sketched_value = None
-
     game_screen.StartScreen()
 
     while True:
@@ -31,10 +28,9 @@ def main():
                     cells_to_remove = 40
                 elif action == "hard":
                     cells_to_remove = 50
+
                 sudoku_board = generate_sudoku(9, cells_to_remove)
-
                 game_numbers = Numbers(sudoku_board, game_screen)
-
                 game_screen.ClearScreen()
                 game_screen.GameScreen()
                 game_numbers.update_screen()
@@ -66,16 +62,23 @@ def main():
             elif type(action) == tuple:
                 selected_cell = action
                 sketched_value = None
-
-                game_numbers.select(action[1], action[0])
+                col = selected_cell[0]
+                row = selected_cell[1]
+                game_numbers.select(row, col)
+                game_screen.ClearScreen()
+                game_screen.GameScreen()
+                game_numbers.update_screen()
+                game_screen.displayTempNum(0, row, col)
 
             #Here I check if the input is a number and if it is in the range to accepted
             elif type(action) == str and action.isdigit() and int(action) in range(1, 10):
                 if selected_cell is not None:
-                    sketched_value = int(action)
                     col = selected_cell[0]
                     row = selected_cell[1]
-                    game_screen.displayTempNum(sketched_value, row, col)
+                    if sudoku_board[row][col] == 0:
+                        sketched_value = int(action)
+                        game_screen.displayTempNum(sketched_value, row, col)
+
 
             elif action == "Enter":
                 if selected_cell is not None and sketched_value is not None:
@@ -94,7 +97,6 @@ def main():
 
                         else:
                             game_screen.LosingScreen()
-
                         state = "GAME_OVER"
             #Arrow Key movement
             elif action in ["Up", "Down", "Left", "Right"]:
