@@ -66,11 +66,11 @@ class Screen:
                 if self.exitButton.collidepoint(position):
                     return("Exit")
                 if self.gameScreenDisplay:
-                    square_size = self.screen.get_rect().width / 9
+                    squareSize = self.screen.get_rect().width / 9
                     #pygame.Rect(WordLocation[0]-5, WordLocation[1]-5,medium.get_rect().width+10,medium.get_rect().height+10)
-                    col = (position[0]//square_size)
-                    row =  (position[1]//square_size)
-                    square = pygame.Rect(col*square_size, row*square_size, square_size+2, square_size+2)
+                    col = (position[0]//squareSize)
+                    row =  (position[1]//squareSize)
+                    square = pygame.Rect(col*squareSize, row*squareSize, squareSize+2, squareSize+2)
                     pygame.draw.rect(self.screen, "red", square, 4)
                     return(int(col),int(row))
             elif event.type == pygame.KEYDOWN: #below is keybord clicking, clicking for on keybord
@@ -125,9 +125,10 @@ class Screen:
         self.screen.blit(WelcomeTo, (WordLocation)) #draws words on image at center given
 
         #Below makes rainbow letters
+        # Below makes rainbow letters
         font.set_bold(True)
-        letters = [
-            font.render('S', False, "Red",),
+        tempLetters = [
+            font.render('S', False, "Red", ),
             font.render('u', False, "Blue"),
             font.render('d', False, "Yellow"),
             font.render('o', False, "Orange"),
@@ -136,11 +137,11 @@ class Screen:
             font.render('!', False, "Red"),
             font.render('!', False, "green"),
             font.render('!', False, "brown")]
-        WordLocation = self.FindCenter(letters[0])
-        WordLocation = (WordLocation[0]-60,WordLocation[1] - 110)
-        for letter in letters:
-            self.screen.blit(letter, WordLocation)
-            WordLocation = (WordLocation[0] + letter.get_width(),WordLocation[1])
+        WordLocation = self.FindCenter(tempLetters[0])
+        WordLocation = (WordLocation[0] - 60, WordLocation[1] - 110)
+        for l in tempLetters:
+            self.screen.blit(l, WordLocation)
+            WordLocation = (WordLocation[0] + l.get_width(), WordLocation[1])
 
 
         font = pygame.font.SysFont('Arial', 28)
@@ -191,19 +192,19 @@ class Screen:
         screenHeight = self.screen.get_rect().height
 
         #below draws the three thick columns and rows
-        square_size = screenWidth // 3
+        squareSize = screenWidth // 3
         for i in range(1, 4):
-            pygame.draw.line(self.screen, "black", (i * square_size, 0), (i * square_size, screenHeight), 4)
-            pygame.draw.line(self.screen, "black", (0, i * square_size), (screenWidth, i * square_size), 4)
+            pygame.draw.line(self.screen, "black", (i * squareSize, 0), (i * squareSize, screenHeight), 4)
+            pygame.draw.line(self.screen, "black", (0, i * squareSize), (screenWidth, i * squareSize), 4)
 
         #below draws the nine cols and rows with thin lines
-        square_size = screenWidth  / 9
+        squareSize = screenWidth  / 9
         for i in range(10):  # 10 lines to create 9 spaces
-            pygame.draw.line(self.screen, (0, 0, 0), (0, i * square_size), (screenWidth, i * square_size), 1)
-            pygame.draw.line(self.screen, (0, 0, 0), (i * square_size, 0), (i * square_size, screenHeight-square_size), 1)
+            pygame.draw.line(self.screen, "black", (0, i * squareSize), (screenWidth, i * squareSize), 1)
+            pygame.draw.line(self.screen, "black", (i * squareSize, 0), (i * squareSize, screenHeight-squareSize), 1)
 
         #so :/ I couldnt figure out how to get the lines to not draw into the bottom so I have what's below to visually fix that
-        whiteRect = pygame.Rect((0,screenHeight-square_size-20),(screenWidth,square_size+21))
+        whiteRect = pygame.Rect((0,screenHeight-squareSize-20),(screenWidth,squareSize+21))
         pygame.draw.rect(self.screen, "White", whiteRect, 50)
 
         #Below creates and displays the buttons:
@@ -243,8 +244,8 @@ class Screen:
         font = pygame.font.SysFont('Arial', 38) #initialized font
 
         # renderedNums = []
-        square_size = self.screen.get_rect().width  / 9 #This is legit same as square size used in prev function
-        WordLocation = (square_size-(square_size/2),square_size-square_size/2)
+        squareSize = self.screen.get_rect().width  / 9 #This is legit same as square size used in prev function
+        WordLocation = (squareSize-(squareSize/2),squareSize-squareSize/2)
         for col in nums:
             # renderedNums.append[[]]
             for num in col:
@@ -253,12 +254,12 @@ class Screen:
                     WordWidth = renderedNum.get_rect().width / 2
                     Wordheight = renderedNum.get_rect().height / 2
                     self.screen.blit(renderedNum, (WordLocation[0]-WordWidth,WordLocation[1]-Wordheight))
-                WordLocation = (WordLocation[0]+square_size,WordLocation[1])
-            WordLocation = (square_size-(square_size/2), WordLocation[1]+square_size)
+                WordLocation = (WordLocation[0]+squareSize,WordLocation[1])
+            WordLocation = (squareSize-(squareSize/2), WordLocation[1]+squareSize)
 
         #below is for teh player numbers to be typed in gray
-        square_size = self.screen.get_rect().width / 9  # This is legit same as square size used in prev function
-        WordLocation = (square_size - (square_size / 2), square_size - square_size / 2)
+        squareSize = self.screen.get_rect().width / 9  # This is legit same as square size used in prev function
+        WordLocation = (squareSize - (squareSize / 2), squareSize - squareSize / 2)
         for col in playernums:
             for num in col:
                 if num != 0:
@@ -266,8 +267,8 @@ class Screen:
                     WordWidth = renderedNum.get_rect().width / 2
                     Wordheight = renderedNum.get_rect().height / 2
                     self.screen.blit(renderedNum, (WordLocation[0]-WordWidth,WordLocation[1]-Wordheight))
-                WordLocation = (WordLocation[0]+square_size,WordLocation[1])
-            WordLocation = (square_size-(square_size/2), WordLocation[1]+square_size)
+                WordLocation = (WordLocation[0]+squareSize,WordLocation[1])
+            WordLocation = (squareSize-(squareSize/2), WordLocation[1]+squareSize)
 
         pygame.display.update()
 
@@ -275,15 +276,15 @@ class Screen:
         font = pygame.font.SysFont('Arial', 38)  # initialized font
 
         #redraws red box, this is here because in order to display a new numbe ryou have to erase the entire screen
-        square_size = self.screen.get_rect().width / 9
-        square = pygame.Rect(col * square_size, row * square_size, square_size + 2, square_size + 2)
+        squareSize = self.screen.get_rect().width / 9
+        square = pygame.Rect(col * squareSize, row * squareSize, squareSize + 2, squareSize + 2)
         pygame.draw.rect(self.screen, "red", square, 4)
 
         if num != 0:
             #below actually displays the number
             renderedNum = font.render(str(num), False, "red")
-            NumY = row * square_size + renderedNum.get_rect().height / 2 #finds Y location of number
-            NumX = ((square_size - (square_size / 2)) + (square_size * col)) - (renderedNum.get_rect().width / 2) #finds x location of number
+            NumY = row * squareSize + renderedNum.get_rect().height / 2 #finds Y location of number
+            NumX = ((squareSize - (squareSize / 2)) + (squareSize * col)) - (renderedNum.get_rect().width / 2) #finds x location of number
             self.screen.blit(renderedNum, (NumX,NumY)) #puts number on screen
 
         pygame.display.update()
