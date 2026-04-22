@@ -77,6 +77,9 @@ def main():
                     row = selected_cell[1]
                     if sudoku_board[row][col] == 0:
                         sketched_value = int(action)
+                        game_screen.ClearScreen()
+                        game_screen.GameScreen()
+                        game_numbers.update_screen()
                         game_screen.displayTempNum(sketched_value, row, col)
 
 
@@ -98,6 +101,7 @@ def main():
                         else:
                             game_screen.LosingScreen()
                         state = "GAME_OVER"
+
             #Arrow Key movement
             elif action in ["Up", "Down", "Left", "Right"]:
                 if selected_cell is not None:
@@ -116,6 +120,7 @@ def main():
                     elif action == "Right":
                         new_row = row
                         new_col = col + 1
+
                     #Boundary
                     if new_col in range(0, 9) and new_row in range(0, 9):
                         selected_cell = (new_col, new_row)
