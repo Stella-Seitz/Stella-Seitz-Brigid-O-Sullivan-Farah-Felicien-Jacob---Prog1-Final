@@ -1,43 +1,43 @@
 import copy
-class Numbers:
+class Numbers: #this class is used for keeping track of the original puzzle numbers, the numbers the play inputs and updating the screen
     def __init__(self, board, screen):
         self.screen = screen
-        self.original = copy.deepcopy(board)
+        self.original = copy.deepcopy(board) #this is so that the changes to the board does not change self.original.
         self.player = [[0]*9 for _ in range(9)]
         self.selected = None
 
-    def select(self, row, col):
+    def select(self, row, col): #this is used to select a cell so that the inputs can be typed into that cell
         self.selected = (row, col)
 
-    def sketch(self, num):
+    def sketch(self, num): #this function is for when the player types a number
         if self.selected:
             row, col = self.selected
             if self.original[row][col] == 0:
                 self.player[row][col] = num
                 self.update_screen()
 
-    def clear_cell(self):
+    def clear_cell(self): #this only works if the cell is selected and is not one of the puzzle's original numbers. Used to erase or clear a player's input
         if self.selected:
             row, col = self.selected
             if self.original[row][col] == 0:
                 self.player[row][col] = 0
                 self.update_screen()
 
-    def place_number(self):
+    def place_number(self): #this confirms the inputs and redraws the board through updating the screen
         self.update_screen()
 
-    def reset(self):
+    def reset(self): #this clears the player's inputs while still keeping the puzzle's original numbers
         self.player = [[0]*9 for _ in range(9)]
         self.update_screen()
 
-    def full_board(self):
+    def full_board(self): #this checks to see if the board is completely full. If there is an exmpty square, then it will return false
         for r in range(9):
             for c in range(9):
                 if self.original[r][c] == 0 and self.player[r][c] == 0:
                     return False
         return True
 
-    def combine(self):
+    def combine(self): #this combines or merges the numbers from the original puzzle and the player's inputs
         combined = [[0]*9 for _ in range(9)]
         for r in range(9):
             for c in range(9):
@@ -47,7 +47,7 @@ class Numbers:
                     combined[r][c] = self.player[r][c]
         return combined
 
-    def check_board(self):
+    def check_board(self): #this checks if the player solved the game correctly
         board = self.combine()
         for row in board:
             if set(row) != set(range(1, 10)):
@@ -69,5 +69,5 @@ class Numbers:
 
         return True
 
-    def update_screen(self):
+    def update_screen(self): #this is so that everytime something is changed, it redraws the board and updates the screen
         self.screen.displayNums(self.original, self.player)
