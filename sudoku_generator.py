@@ -72,6 +72,7 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_row(self, row, num):
+        # iterates through all the columns in a row to see if num appears, if it does not then it's valid
         for col in range(9):
             if num == self.board[row][col]:
                 return False
@@ -89,6 +90,7 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_col(self, col, num):
+        # iterates through all the rows in a column to see if num appears, if it does not then it's valid
         for row in range(9):
             if num == self.board[row][col]:
                 return False
@@ -109,6 +111,7 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_box(self, row_start, col_start, num):
+        # iterates through cells in the box to see if num appears in any of them, if it does not then it's valid
         for i in range(row_start, row_start+3):
             for j in range(col_start, col_start+3):
                 if num == self.board[i][j]:
@@ -132,6 +135,8 @@ class SudokuGenerator:
         validBox = self.valid_in_box(rowStart, colStart, num)
         validCol = self.valid_in_col(col, num)
         validRow = self.valid_in_row(row, num)
+        # checks if qualifications for row, col, and box are satisfied (num does not appear in either)
+        # then checks if spot is empty (==0)
         if validBox and validCol and validRow:
             if self.board[row][col] == 0:
                 return True
@@ -149,8 +154,12 @@ class SudokuGenerator:
     '''
     def fill_box(self, row_start, col_start):
         numList = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        # nested for loop to iterate through each cell in a box
         for row in range(row_start, row_start + 3):
             for col in range(col_start, col_start + 3):
+
+                # after generating a random cellNum, it iterates through numList to see if that number is unused
+                # once the number has been used, it's removed from numList
                 while True:
                     cellNum = random.randint(1, 9)
                     if cellNum in numList:
@@ -237,6 +246,8 @@ class SudokuGenerator:
     '''
     def remove_cells(self):
         count = 0
+        # selects a random row and col, checks it hasn't already been removed (!=0), then removes cell
+        # will update count each time this is done successfully
         while count < self.removed_cells:
             randRow = random.randint(0, 8)
             randCol = random.randint(0, 8)
